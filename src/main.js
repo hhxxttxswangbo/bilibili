@@ -7,6 +7,11 @@ import Vant from 'vant';
 import 'vant/lib/index.css'
 Vue.use(Vant);
 
+//引入axios
+import http from '../http'
+//将http挂载到prototype上
+Vue.prototype.$http = http
+
 Vue.config.productionTip = false
 
 new Vue({

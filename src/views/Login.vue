@@ -2,21 +2,13 @@
   <div>
     <!-- middleTop接收LoginTop传过来的值，由于是个字符串不加冒号 -->
     <!-- @inputChange="(content) => (name = content)"接收LoginText里的content赋值给name -->
-    <login-top middleTop="注册bilibili">
-      <div slot="right" style="font-size: 12px" @click="$router.push('/login')">
-        切换到登录
-      </div>
+    <login-top middleTop="登录bilibili">
+      <div slot="right" style="font-size:12px" @click="$router.push('/register')">切换到注册</div>
     </login-top>
-    <login-text
-      label="姓名"
-      style="margin: 15px 0"
-      placeholder="请输入姓名"
-      rule="^.{6,16}$"
-      @inputChange="(content) => (model.name = content)"
-    ></login-text>
     <login-text
       label="账号"
       placeholder="请输入账号"
+      style="margin: 15px 0"
       rule="^.{6,16}$"
       @inputChange="(content) => (model.username = content)"
     ></login-text>
@@ -27,7 +19,7 @@
       rule="^.{6,16}$"
       @inputChange="(content) => (model.password = content)"
     ></login-text>
-    <login-btn btntext="注册" @registerSubmit="registerSubmit"></login-btn>
+    <login-btn btntext="登录" @registerSubmit="registerSubmit"></login-btn>
   </div>
 </template>
 
@@ -39,7 +31,6 @@ export default {
   data() {
     return {
       model: {
-        name: "",
         username: "",
         password: "",
       },
@@ -55,10 +46,10 @@ export default {
     async registerSubmit() {
       // console.log("按钮点击了");
       //正则通过才发送网络请求
-      if (this.model.name && this.model.username && this.model.password) {
+      if (this.model.username && this.model.password) {
         // console.log('正则全都校验成功');
         //post请求后面跟一个对象
-        const res = await this.$http.post("/register", this.model);
+        const res = await this.$http.post("/login", this.model);
         //弹出注册成功或者失败的消息
         this.$msg.fail(res.data.msg);
       } else {

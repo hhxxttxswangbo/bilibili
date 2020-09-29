@@ -11,4 +11,9 @@ body {
   box-sizing: border-box;
   background-color: #f4f4f4;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}
 </style>

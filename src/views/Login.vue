@@ -3,7 +3,13 @@
     <!-- middleTop接收LoginTop传过来的值，由于是个字符串不加冒号 -->
     <!-- @inputChange="(content) => (name = content)"接收LoginText里的content赋值给name -->
     <login-top middleTop="登录bilibili">
-      <div slot="right" style="font-size:12px" @click="$router.push('/register')">切换到注册</div>
+      <div
+        slot="right"
+        style="font-size: 12px"
+        @click="$router.push('/register')"
+      >
+        切换到注册
+      </div>
     </login-top>
     <login-text
       label="账号"
@@ -52,6 +58,14 @@ export default {
         const res = await this.$http.post("/login", this.model);
         //弹出注册成功或者失败的消息
         this.$msg.fail(res.data.msg);
+        if (res.data.code == 301 || res.data.code == 302) {
+          return;
+        }
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.id);
+        setTimeout(() => {
+          this.$router.push("/userinfo");
+        }, 1000);
       } else {
         //弹出格式不正确，请重新输入
         this.$msg.fail("格式不正确，请重新输入");

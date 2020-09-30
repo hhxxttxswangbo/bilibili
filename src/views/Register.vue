@@ -61,6 +61,11 @@ export default {
         const res = await this.$http.post("/register", this.model);
         //弹出注册成功或者失败的消息
         this.$msg.fail(res.data.msg);
+        localStorage.setItem("id",res.data.id);
+        localStorage.setItem("token",res.data.objtoken);
+        setTimeout(() => {
+          this.$router.push('/userinfo')
+        }, 1000);
       } else {
         //弹出格式不正确，请重新输入
         this.$msg.fail("格式不正确，请重新输入");

@@ -10,14 +10,24 @@
       </p>
     </div>
     <div>
-      <img src="@/assets/default_img.jpg" alt="" />
+      <img :src="imgUrl" alt="" @click="$router.push('/edit')" />
       <p>下载App</p>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      imgUrl: "",
+    };
+  },
+  async mounted() {
+    const res = await this.$http.get("/user/" + localStorage.getItem("id"));
+    this.imgUrl = res.data[0].user_img;
+  },
+};
 </script>
 
 <style lang="less">

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import UserInfo from '@/views/UserInfo.vue'
+import Edit from '@/views/Edit.vue'
 
 
 Vue.use(VueRouter)
@@ -23,7 +24,18 @@ const routes = [
   },
   {
     path: '/userinfo',
-    component: UserInfo
+    component: UserInfo,
+    //权限验证
+    meta: {
+      istoken: 'true'
+    }
+  },
+  {
+    path: '/edit',
+    component: Edit,
+    meta: {
+      istoken: 'true'
+    }
   }
 ]
 

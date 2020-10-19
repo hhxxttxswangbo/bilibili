@@ -4,6 +4,7 @@ import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import UserInfo from '@/views/UserInfo.vue'
 import Edit from '@/views/Edit.vue'
+import Home from '@/views/Home.vue'
 
 
 Vue.use(VueRouter)
@@ -11,7 +12,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/register'
+    component: Home
   }
   ,
   {
@@ -36,7 +37,8 @@ const routes = [
     meta: {
       istoken: 'true'
     }
-  }
+  },
+
 ]
 
 const router = new VueRouter({

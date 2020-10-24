@@ -13,6 +13,8 @@ import { Toast } from 'vant';
 //引入axios
 import http from '../http'
 
+import '@/assets/style.css'
+
 //将http挂载到prototype上
 Vue.prototype.$msg = Toast
 

@@ -1,54 +1,84 @@
 <template>
-  <div class="home" v-if="category">
-    <nav-bar></nav-bar>
-    <div class="categorytab">
-      <div class="category-ico" @click="$router.push('/editcategory')">
-        <van-icon name="setting-o" />
-      </div>
-      <van-tabs v-model="active" swipeable sticky animated>
-        <van-tab
-          v-for="(item, index) in category"
-          :key="index"
-          :title="item.title"
+  <div class="home">
+    <navBar></navBar>
+    <van-tabs v-model="active" swipeable sticky>
+      <van-tab
+        v-for="(item, index) in category"
+        :key="index"
+        :title="item.title"
+      >
+        <van-list
+          v-model="item.loading"
+          :immediate-check="false"
+          :finished="item.finished"
+          finished-text="没有更多了"
+          @load="onLoad"
         >
-        </van-tab>
-      </van-tabs>
-    </div>
+          <div class="detailparent">
+            <detail
+              class="detailitem"
+              :detailitem="categoryitem"
+              v-for="(categoryitem, categoryindex) in item.list"
+              :key="categoryindex"
+            />
+          </div>
+        </van-list>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/common/NavBar.vue";
+import Detail from "./Detail";
 export default {
+  components: {
+    NavBar,
+    Detail,
+  },
   data() {
     return {
+      //获取标签栏滚动数据
       category: [],
+      //active为下标
       active: 0,
     };
   },
-  components: {
-    NavBar,
-  },
   methods: {
-    async selectCategory() {
-      if (localStorage.getItem("newCat")) {
-        return;
-      }
+    //获取标签栏滚动数据
+    async selectcategory() {
       const res = await this.$http.get("/category");
-      this.category = this.changeCategory(res.data);
-      this.selectArticle();
+      // console.log(res);
+      //赋值到category中
+      // this.category = res.data;
+      //传入res.data到changecategory中
+      this.changecategory(res.data);
     },
-    changeCategory(data) {
+    onLoad() {
+      // console.log("已经到底部了");
+      const categoryitem = this.categoryItem();
+      setTimeout(() => {
+        categoryitem.page += 1;
+        this.selectArticle();
+      }, 1000);
+    },
+    //改造数据：下拉加载更多时才加载当前数据
+    changecategory(data) {
+      // console.log(data);
+      // map方法可以在已有的item上进行改造,此处添加list属性,表示每个分类里存储不同的文章数据
       const category1 = data.map((item, index) => {
         item.list = [];
         item.page = 0;
         item.finished = false;
-        item.loading = true;
+        item.loading = false;
         item.pagesize = 10;
         return item;
       });
-      return category1;
+      // console.log(category1);
+      this.category = category1;
+      this.selectArticle();
     },
+    //获取文章数据
     async selectArticle() {
       const categoryitem = this.categoryItem();
       const res = await this.$http.get("/detail/" + categoryitem._id, {
@@ -57,23 +87,27 @@ export default {
           pagesize: categoryitem.pagesize,
         },
       });
+      categoryitem.list.push(...res.data);
+      categoryitem.loading = false;
+      if (res.data.length < categoryitem.pagesize) {
+        categoryitem.finished = true;
+      }
     },
-
     categoryItem() {
+      //this.active获取下标
       const categoryitem = this.category[this.active];
+      // console.log(categoryitem);
       return categoryitem;
     },
   },
   watch: {
+    //监听下标的点击事件
     active() {
-      const categoryitem = this.categoryItem();
-      if (!categoryitem.list.length) {
-        this.selectArticle();
-      }
+      this.selectArticle();
     },
   },
   created() {
-    this.selectCategory();
+    this.selectcategory();
   },
 };
 </script>

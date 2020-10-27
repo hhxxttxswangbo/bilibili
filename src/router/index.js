@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import UserInfo from '@/views/UserInfo.vue'
 import Edit from '@/views/Edit.vue'
 import Home from '@/views/Home.vue'
+import Article from '@/views/Article.vue'
 
 
 Vue.use(VueRouter)
@@ -38,7 +39,10 @@ const routes = [
       istoken: 'true'
     }
   },
-
+  {
+    path: '/article/:id',
+    component: Article
+  }
 ]
 
 const router = new VueRouter({

@@ -15,7 +15,7 @@
           @load="onLoad"
         >
           <div class="detailparent">
-            <detail
+            <cover
               class="detailitem"
               :detailitem="categoryitem"
               v-for="(categoryitem, categoryindex) in item.list"
@@ -30,11 +30,11 @@
 
 <script>
 import NavBar from "@/components/common/NavBar.vue";
-import Detail from "./Detail";
+import Cover from "./Cover";
 export default {
   components: {
     NavBar,
-    Detail,
+    Cover,
   },
   data() {
     return {

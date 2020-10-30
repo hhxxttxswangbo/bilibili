@@ -13,7 +13,10 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: Home
+    component: Home,
+    meta: {
+      keepalive: true
+    }
   }
   ,
   {

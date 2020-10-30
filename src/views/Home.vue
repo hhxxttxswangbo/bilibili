@@ -108,6 +108,7 @@ export default {
   },
   created() {
     this.selectcategory();
+    console.log(this.$route);
   },
 };
 </script>

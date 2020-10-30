@@ -1,5 +1,5 @@
 <template>
-  <div @click="$router.push(`/article/${detailitem.id}`)">
+  <div @click="pathPush" v-if="detailitem">
     <div class="detailItem">
       <div class="imgparent">
         <img
@@ -26,7 +26,9 @@ export default {
   props: ["detailitem"],
   methods: {
     pathPush() {
-      this.$router.push(`/article/${this.detailitem.id}`);
+      if (this.$route.path != `/article/${this.detailitem.id}`) {
+        this.$router.push(`/article/${this.detailitem.id}`);
+      }
     },
   },
 };

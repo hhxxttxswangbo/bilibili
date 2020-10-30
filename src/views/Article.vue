@@ -16,37 +16,36 @@
           <span>5281弹幕</span>
           <span>{{ model.date }}</span>
         </div>
-        <div>
-          <p>
-            <span class="icon-star-full"></span>
-            <span>收藏</span>
-          </p>
-          <p>
-            <span class="icon-bubble"></span>
-            <span>关注</span>
-          </p>
-          <p>
-            <span class="icon-redo2"></span>
-            <span>分享</span>
-          </p>
-        </div>
       </div>
-      <div class="detailparent"></div>
+      <div class="detailparent">
+        <cover
+          class="detailitem"
+          v-for="(item, index) in commendList"
+          :key="index"
+          :detailitem="item"
+        />
+      </div>
     </div>
+    <commentTitle />
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/common/NavBar.vue";
-
+import Cover from "./Cover";
+import CommentTitle from "@/components/article/commentTitle.vue";
 export default {
   data() {
     return {
       model: null,
+      commendList: null,
+      myuser: null,
     };
   },
   components: {
     NavBar,
+    Cover,
+    CommentTitle,
   },
   methods: {
     //获取文章信息
@@ -55,9 +54,21 @@ export default {
       this.model = res.data[0];
       console.log(res);
     },
+    //获取推荐文章
+    async commendData() {
+      const res = await this.$http.get("/commend");
+      this.commendList = res.data;
+    },
   },
   created() {
     this.articleitemData();
+    this.commendData();
+  },
+  watch: {
+    $route() {
+      this.articleitemData();
+      this.commendData();
+    },
   },
 };
 </script>
